@@ -4,32 +4,11 @@ There was a beautiful idea of building an app that would show the upcoming weath
 
 Luckily we now have [docker compose](https://docs.docker.com/compose/) saving us from installing the tools on our computer, and making sure the app looks (and is) the same in development and in production. All we need is someone to add the few missing files!
 
-## Prerequisites
-
-* An [openweathermap](http://openweathermap.org/) API key.
-* [Docker](https://www.docker.com/) and [docker compose](https://docs.docker.com/compose/) installed.
-
-## Returning your solution
-
-### Via github
-
-* Make a copy of this repository in your own github account (do not fork unless you really want to be public).
-* Create a personal repository in github.
-* Make changes, commit them, and push them in your own repository.
-* Send us the url where to find the code.
-
-### Via tar-package
-
-* Clone this repository.
-* Make changes and **commit them**.
-* Create a **.tgz** -package including the **.git**-directory, but excluding the **node_modules**-directories.
-* Send us the archive.
-
 ## Exercises
 
 There are a few things you must do to get the app up and running. After that there are a few things you can do to make it better.
 
-### Mandatory
+### Mandatory (DONE - the command "docker-compose up" switches on backend and frontend containers)
 
 * Get yourself an API key to make queries in the [openweathermap](http://openweathermap.org/).
 
