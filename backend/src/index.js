@@ -22,11 +22,30 @@ const fetchWeather = async () => {
   return response ? response.json() : {}
 };
 
-router.get('/api/weather', async ctx => {
-  const weatherData = await fetchWeather();
+const fetchForecast = async () => {
+  const endpoint = `${mapURI}/forecast?q=${targetCity}&appid=${appId}&`;
+  const response = await fetch(endpoint);
 
+  return response ? response.json() : {}
+};
+
+router.get('/api/weather', async ctx => {
+  const res = {};
+  const weatherData = await fetchWeather();
+  const forecastData = await fetchForecast();
+  
+  //Fill array of current weather + forecast in the next 9h
+  if(forecastData.list !== null && weatherData.weather !== null){
+  	res['weather'] = [];
+  	res['weather'].push(weatherData.weather[0]);
+  	res['weather'].push(forecastData.list[0]);
+  	res['weather'].push(forecastData.list[1]);
+  	res['weather'].push(forecastData.list[2]);
+  }
+  
   ctx.type = 'application/json; charset=utf-8';
-  ctx.body = weatherData.weather ? weatherData.weather[0] : {};
+  ctx.body = res;
+
 });
 
 app.use(router.routes());
