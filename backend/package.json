@@ -2,7 +2,7 @@
   "name": "weatherapp-backend",
   "version": "0.0.1",
   "description": "Weatherapp exercise backend",
-  "author": "Marko Klemetti <marko.klemetti@gmail.com>",
+  "author": "Alessio Spallino <alessio.spallino.93@gmail.com>",
   "license": "UNLICENSED",
   "scripts": {
     "start": "node src/index.js",

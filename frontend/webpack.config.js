@@ -12,6 +12,7 @@ module.exports = {
     contentBase: 'src/public',
     historyApiFallback: true,
     port: 8000,
+    https: true,
     host: '0.0.0.0',
   },
   devtool: 'eval',

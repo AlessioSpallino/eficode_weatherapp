@@ -3,9 +3,23 @@ import ReactDOM from 'react-dom';
 
 const baseURL = process.env.ENDPOINT;
 
+/// Config for the app setup
+const config = {
+  latitude: 0,
+  longitude: 0,
+  mapZoomLevel: 10
+}
+
+/**
+* Run when page is loaded, call backend
+*/
 const getWeatherFromApi = async () => {
+
   try {
-    const response = await fetch(`${baseURL}/weather`);
+
+    const url = await getLocation();
+    console.log("fetcho adesso: " + url);
+    const response = await fetch(url);
 
     return response.json();
 
@@ -16,33 +30,50 @@ const getWeatherFromApi = async () => {
   return {};
 };
 
+
+const getLocation = async () => {
+  console.log('getting location...');
+  if (navigator.geolocation) {
+    const position = await new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(position => resolve(position));
+    });
+    config.latitude = position.coords.latitude;
+    config.longitude = position.coords.longitude;
+    const url = `${baseURL}/weather/`.concat(config.latitude + "/" + config.longitude);
+    return url;
+  }
+}
+
+
 class Weather extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      icon: "",
+      icon: ""
     };
   }
-
+  
   async componentWillMount() {
     const res = await getWeatherFromApi();
-    console.log(res.weather[0]);
+    console.log(config.latitude);
     this.setState({icon: res.weather[0].icon.slice(0, -1)});
   }
+
+
 
   render() {
     const { icon } = this.state;
 
     return (
       <div className="icon">
-        { icon && <img src={`/img/${icon}.svg`} /> }
+      { icon && <img src={`/img/${icon}.svg`} /> }
       </div>
-    );
+      );
+    }
   }
-}
 
-ReactDOM.render(
+  ReactDOM.render(
   <Weather />,
   document.getElementById('app')
-);
+  );

@@ -22,6 +22,20 @@ const fetchWeather = async () => {
   return response ? response.json() : {}
 };
 
+const fetchWeatherLatLon = async (lat, lon) => {
+  const endpoint = `${mapURI}/weather?lat=${lat}&lon=${lon}&appid=${appId}&`;
+  const response = await fetch(endpoint);
+
+  return response ? response.json() : {}
+};
+
+const fetchForecastLatLon = async (lat, lon) => {
+  const endpoint = `${mapURI}/forecast?lat=${lat}&lon=${lon}&appid=${appId}&`;
+  const response = await fetch(endpoint);
+
+  return response ? response.json() : {}
+};
+
 const fetchForecast = async () => {
   const endpoint = `${mapURI}/forecast?q=${targetCity}&appid=${appId}&`;
   const response = await fetch(endpoint);
@@ -36,11 +50,30 @@ router.get('/api/weather', async ctx => {
   
   //Fill array of current weather + forecast in the next 9h
   if(forecastData.list !== null && weatherData.weather !== null){
-  	res['weather'] = [];
-  	res['weather'].push(weatherData.weather[0]);
-  	res['weather'].push(forecastData.list[0]);
-  	res['weather'].push(forecastData.list[1]);
-  	res['weather'].push(forecastData.list[2]);
+      res['weather'] = [];
+      res['weather'].push(weatherData.weather[0]);
+      res['weather'].push(forecastData.list[0]);
+      res['weather'].push(forecastData.list[1]);
+      res['weather'].push(forecastData.list[2]);
+  }
+  
+  ctx.type = 'application/json; charset=utf-8';
+  ctx.body = res;
+
+});
+
+router.get('/api/weather/:Lat/:Lon', async ctx => {
+  const res = {};
+  const weatherData = await fetchWeatherLatLon(ctx.params.Lat, ctx.params.Lon);
+  const forecastData = await fetchForecastLatLon(ctx.params.Lat, ctx.params.Lon);
+
+  //Fill array of current weather + forecast in the next 9h
+  if(forecastData.list !== null && weatherData.weather !== null){
+      res['weather'] = [];
+      res['weather'].push(weatherData.weather[0]);
+      res['weather'].push(forecastData.list[0]);
+      res['weather'].push(forecastData.list[1]);
+      res['weather'].push(forecastData.list[2]);
   }
   
   ctx.type = 'application/json; charset=utf-8';
