@@ -92,13 +92,15 @@ class WeatherMap extends React.Component{
     super(props);
 
     this.state = {
-      location: "",
-      //weather: "",
-      //icon: "",
-      currenticon: "",
-      forecast3: "",
-      forecast6: "",
-      forecast9: "",
+      location: "enable geolocation",
+      weather: "enable geolocation",
+      currenticon: "111",
+      icon3: "111",
+      icon6: "111",
+      icon9: "111",
+      forecast3: "enable geolocation",
+      forecast6: "enable geolocation",
+      forecast9: "enable geolocation",
 
     };
   }
@@ -163,9 +165,14 @@ class WeatherMap extends React.Component{
     {
       const res = await getWeatherFromLocation(location);
       this.setState({currenticon: res.weather[0].icon.slice(0, -1)});
-      this.setState({forecast3: res.weather[1].weather[0].icon.slice(0, -1)});
-      this.setState({forecast6: res.weather[2].weather[0].icon.slice(0, -1)});
-      this.setState({forecast9: res.weather[3].weather[0].icon.slice(0, -1)});
+      this.setState({location: res.place});
+      this.setState({weather: res.weather[0].description});
+      this.setState({icon3: res.weather[1].weather[0].icon.slice(0, -1)});
+      this.setState({icon6: res.weather[2].weather[0].icon.slice(0, -1)});
+      this.setState({icon9: res.weather[3].weather[0].icon.slice(0, -1)});
+      this.setState({forecast3: res.forecast3});
+      this.setState({forecast6: res.forecast6});
+      this.setState({forecast9: res.forecast9});
 
       this.updateMap();
     }
@@ -176,12 +183,17 @@ class WeatherMap extends React.Component{
    */
    async otherSearch() {
 
-    const respin = await getWeatherFromClick();
+    const res = await getWeatherFromClick();
 
-    this.setState({currenticon: respin.weather[0].icon.slice(0, -1)});
-    this.setState({forecast3: respin.weather[1].weather[0].icon.slice(0, -1)});
-    this.setState({forecast6: respin.weather[2].weather[0].icon.slice(0, -1)});
-    this.setState({forecast9: respin.weather[3].weather[0].icon.slice(0, -1)});
+    this.setState({currenticon: res.weather[0].icon.slice(0, -1)});
+    this.setState({location: res.place});
+    this.setState({weather: res.weather[0].description});
+    this.setState({icon3: res.weather[1].weather[0].icon.slice(0, -1)});
+    this.setState({icon6: res.weather[2].weather[0].icon.slice(0, -1)});
+    this.setState({icon9: res.weather[3].weather[0].icon.slice(0, -1)});
+    this.setState({forecast3: res.forecast3});
+    this.setState({forecast6: res.forecast6});
+    this.setState({forecast9: res.forecast9});
     
     this.updateMap();
   }
@@ -205,14 +217,6 @@ class WeatherMap extends React.Component{
   }
 
   /**
-   * Called after that the page is rendered
-   */
-  componentDidMount(){
-
-    this.renderMap();
-  }
-
-  /**
    * Called before that the page is rendered
    */
   async componentWillMount() {
@@ -220,12 +224,17 @@ class WeatherMap extends React.Component{
     const res = await getWeatherFromPosition();
     //Get information from the response (current w and forecast every 3h + other info that can be taken)
     this.setState({currenticon: res.weather[0].icon.slice(0, -1)});
-    this.setState({forecast3: res.weather[1].weather[0].icon.slice(0, -1)});
-    this.setState({forecast6: res.weather[2].weather[0].icon.slice(0, -1)});
-    this.setState({forecast9: res.weather[3].weather[0].icon.slice(0, -1)});
+    this.setState({location: res.place});
+    this.setState({weather: res.weather[0].description});
+    this.setState({icon3: res.weather[1].weather[0].icon.slice(0, -1)});
+    this.setState({icon6: res.weather[2].weather[0].icon.slice(0, -1)});
+    this.setState({icon9: res.weather[3].weather[0].icon.slice(0, -1)});
+    this.setState({forecast3: res.forecast3});
+    this.setState({forecast6: res.forecast6});
+    this.setState({forecast9: res.forecast9});
 
     this.updateMap();
-
+    this.renderMap();
   }
 
   render() {
@@ -233,7 +242,7 @@ class WeatherMap extends React.Component{
       <div id="app">
         <div id="app__interface">
           <div className="panel panel-default">
-            <div className="panel-heading text-center"><span className="text-muted">Enter a place name below, drag the marker <em>or</em> click directly on the map</span></div>
+            <div className="panel-heading text-center"><span className="text-muted">Enter a place name below <em>or</em> use the map</span></div>
               <div className="panel-body">
                 
                 <form onSubmit={this.formSubmit}>
@@ -246,7 +255,7 @@ class WeatherMap extends React.Component{
                     
                 </form>
               </div>
-            <WeatherForecast currenticon={this.state.currenticon} forecast3={this.state.forecast3} forecast6={this.state.forecast6} forecast9={this.state.forecast9}/>
+            <WeatherForecast currenticon={this.state.currenticon} icon3={this.state.icon3} icon6={this.state.icon6} icon9={this.state.icon9} forecast3={this.state.forecast3} forecast6={this.state.forecast6} forecast9={this.state.forecast9} location={this.state.location} weather={this.state.weather}/>
           </div>
         </div>
         <div id="map"></div>
@@ -265,11 +274,38 @@ class WeatherForecast extends React.Component {
     //const { forecast9 } = this.state;
 
     return (
+      <div>
       <div className="panel-heading weather">
-        
+        <p className="text-muted"><strong>{this.props.location}</strong></p>
+        <span className="text-muted">{this.props.weather}</span>
         <div className="weather__icon">
-          <img src={this.props.currenticon} />
+          <img src={`/img/${this.props.currenticon}.svg`} />
         </div>
+      </div>
+
+      <div className="panel-heading weather">
+        <p className="text-muted"><strong>{this.props.location}</strong></p>
+        <span className="text-muted">{this.props.forecast3}</span>
+        <div className="weather__icon">
+          <img src={`/img/${this.props.icon3}.svg`} />
+        </div>
+      </div>
+
+      <div className="panel-heading weather">
+        <p className="text-muted"><strong>{this.props.location}</strong></p>
+        <span className="text-muted">{this.props.forecast6}</span>
+        <div className="weather__icon">
+          <img src={`/img/${this.props.icon6}.svg`} />
+        </div>
+      </div>
+
+      <div className="panel-heading weather">
+        <p className="text-muted"><strong>{this.props.location}</strong></p>
+        <span className="text-muted">{this.props.forecast9}</span>
+        <div className="weather__icon">
+          <img src={`/img/${this.props.icon9}.svg`} />
+        </div>
+      </div>
       </div>
       );
   }

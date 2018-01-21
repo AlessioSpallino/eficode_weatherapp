@@ -51,10 +51,18 @@ router.get('/api/weather', async ctx => {
   //Fill array of current weather + forecast in the next 9h
   if(forecastData.list !== null && weatherData.weather !== null){
       res['weather'] = [];
+      res['place'] = [];
+      res['forecast3'] = [];
+      res['forecast6'] = [];
+      res['forecast9'] = [];
       res['weather'].push(weatherData.weather[0]);
       res['weather'].push(forecastData.list[0]);
       res['weather'].push(forecastData.list[1]);
       res['weather'].push(forecastData.list[2]);
+      res['place'].push(weatherData.name + "," + weatherData.sys.country);
+      res['forecast3'].push(forecastData.list[0].dt_txt);
+      res['forecast6'].push(forecastData.list[1].dt_txt);
+      res['forecast9'].push(forecastData.list[2].dt_txt);
   }
   
   ctx.type = 'application/json; charset=utf-8';
@@ -70,12 +78,21 @@ router.get('/api/weather/:Lat/:Lon', async ctx => {
   //Fill array of current weather + forecast in the next 9h
   if(forecastData.list !== null && weatherData.weather !== null){
       res['weather'] = [];
+      res['place'] = [];
+      res['forecast3'] = [];
+      res['forecast6'] = [];
+      res['forecast9'] = [];
       res['weather'].push(weatherData.weather[0]);
       res['weather'].push(forecastData.list[0]);
       res['weather'].push(forecastData.list[1]);
       res['weather'].push(forecastData.list[2]);
+      res['place'].push(weatherData.name + "," + weatherData.sys.country);
+      res['forecast3'].push(forecastData.list[0].dt_txt);
+      res['forecast6'].push(forecastData.list[1].dt_txt);
+      res['forecast9'].push(forecastData.list[2].dt_txt);
   }
-  
+
+  console.log(res);
   ctx.type = 'application/json; charset=utf-8';
   ctx.body = res;
 
