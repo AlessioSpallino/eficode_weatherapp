@@ -1,27 +1,19 @@
-body{
-  overflow: hidden;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.icon {
-  width: 30vw;
-  height: 30vw;
-}
-
 .panel > div {
   border-radius: 0 !important;
 }
 
-$panel-width:  500px;
-
-html, body {
+html{
   width: 100%;
   height: 100%;
+}
+
+body {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 #mount-point,
@@ -34,9 +26,9 @@ html, body {
   position: absolute;
   top: 10px;
   left: 50%;
-  width: $panel-width;
+  width: 500px;
   z-index: 99;
-  margin-left: -($panel-width / 2);
+  margin-left: -250px;
 }
 
 #map {
@@ -49,7 +41,7 @@ form .input-group {
 }
 
 .panel {
-  width: $panel-width;
+  width: 500px;
   margin-left: auto;
   margin-right: auto;
 }
