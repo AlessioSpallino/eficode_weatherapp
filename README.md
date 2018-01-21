@@ -1,10 +1,8 @@
-# Weatherapp - TASK DONE:
+# Weatherapp
 
-## Exercises
+## TASKs DONE (I've added extra features)
 
 There are a few things you must do to get the app up and running. After that there are a few things you can do to make it better.
-
-### Mandatory (DONE - the command "docker-compose up" switches on backend and frontend containers)
 
 * Get yourself an API key to make queries in the [openweathermap](http://openweathermap.org/).
 
@@ -13,8 +11,6 @@ There are a few things you must do to get the app up and running. After that the
 * Add **Dockerfile**'s in the *frontend* and the *backend* directories to run them virtually on any environment having [docker](https://www.docker.com/) installed. It should work by saying e.g. `docker build -t weatherapp_backend . && docker run --rm -i -p 9000:9000 --name weatherapp_backend -t weatherapp_backend`. If it doesn't, remember to check your api key first.
 
 * Add a **docker-compose.yml** -file connecting the frontend and the backend, enabling running the app in a connected set of containers.
-
-### Optional (do as many as you like)
 
 * The application now only reports the current weather. It should probably report the forecast e.g. a few hours from now. (tip: [openweathermap api](https://openweathermap.org/forecast5))
 
