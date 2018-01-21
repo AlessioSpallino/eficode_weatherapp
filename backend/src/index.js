@@ -15,8 +15,8 @@ const app = new Koa();
 
 app.use(cors());
 
-const fetchWeather = async () => {
-  const endpoint = `${mapURI}/weather?q=${targetCity}&appid=${appId}&`;
+const fetchWeather = async (pos) => {
+  const endpoint = `${mapURI}/weather?q=${pos}&appid=${appId}&`;
   const response = await fetch(endpoint);
 
   return response ? response.json() : {}
@@ -36,17 +36,17 @@ const fetchForecastLatLon = async (lat, lon) => {
   return response ? response.json() : {}
 };
 
-const fetchForecast = async () => {
-  const endpoint = `${mapURI}/forecast?q=${targetCity}&appid=${appId}&`;
+const fetchForecast = async (pos) => {
+  const endpoint = `${mapURI}/forecast?q=${pos}&appid=${appId}&`;
   const response = await fetch(endpoint);
 
   return response ? response.json() : {}
 };
 
-router.get('/api/weather', async ctx => {
+router.get('/api/weather/:pos', async ctx => {
   const res = {};
-  const weatherData = await fetchWeather();
-  const forecastData = await fetchForecast();
+  const weatherData = await fetchWeather(ctx.params.pos);
+  const forecastData = await fetchForecast(ctx.params.pos);
   
   //Fill array of current weather + forecast in the next 9h
   if(forecastData.list !== null && weatherData.weather !== null){
@@ -55,6 +55,8 @@ router.get('/api/weather', async ctx => {
       res['forecast3'] = [];
       res['forecast6'] = [];
       res['forecast9'] = [];
+      res['latitude'] = [];
+      res['longitude'] = [];
       res['weather'].push(weatherData.weather[0]);
       res['weather'].push(forecastData.list[0]);
       res['weather'].push(forecastData.list[1]);
@@ -63,8 +65,11 @@ router.get('/api/weather', async ctx => {
       res['forecast3'].push(forecastData.list[0].dt_txt);
       res['forecast6'].push(forecastData.list[1].dt_txt);
       res['forecast9'].push(forecastData.list[2].dt_txt);
+      res['latitude'].push(weatherData.coord.lat);
+      res['longitude'].push(weatherData.coord.lon);
   }
   
+  console.log(res);
   ctx.type = 'application/json; charset=utf-8';
   ctx.body = res;
 
@@ -92,7 +97,6 @@ router.get('/api/weather/:Lat/:Lon', async ctx => {
       res['forecast9'].push(forecastData.list[2].dt_txt);
   }
 
-  console.log(res);
   ctx.type = 'application/json; charset=utf-8';
   ctx.body = res;
 

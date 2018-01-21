@@ -1,8 +1,4 @@
-# Weatherapp
-
-There was a beautiful idea of building an app that would show the upcoming weather. The developers wrote a nice backend and a frontend following the latest principles and - to be honest - bells and whistles. However, the developers did not remember to add any information about the infrastructure or even setup instructions in the source code.
-
-Luckily we now have [docker compose](https://docs.docker.com/compose/) saving us from installing the tools on our computer, and making sure the app looks (and is) the same in development and in production. All we need is someone to add the few missing files!
+# Weatherapp - TASK DONE:
 
 ## Exercises
 
@@ -24,9 +20,11 @@ There are a few things you must do to get the app up and running. After that the
 
 * The developers are still keen to run the app and its pipeline on their own computers. Share the development files for the container by using volumes, and make sure the containers are started with a command enabling hot reload.
 
-* There are [eslint](http://eslint.org/) errors. Sloppy coding it seems. Please help.
-
 * The app currently reports the weather only for location defined in the *backend*. Shouldn't it check the browser location and use that as the reference for making a forecast? (tip: [geolocation](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/Using_geolocation))
+
+### TODO NEXT:
+
+* There are [eslint](http://eslint.org/) errors. Sloppy coding it seems. Please help.
 
 * There are no tests. Where are the tests? (tip: [mocha](https://mochajs.org/) or [robot framework](http://robotframework.org/)) Disclaimer: this is not an easy task. If you really want to try writing robot tests, start by creating a third container that gives expected weather data, and direct the backend queries there by redefining the **MAP_ENDPOINT**.
 

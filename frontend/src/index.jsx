@@ -10,8 +10,8 @@ var mapZoomLevel = '';
 
 /// Config for the app setup
 const config = {
-  latitude: 41.87,
-  longitude: 12.56,
+  latitude: '',
+  longitude: '',
   mapZoomLevel: 10
 }
 
@@ -103,6 +103,8 @@ class WeatherMap extends React.Component{
       forecast9: "enable geolocation",
 
     };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   renderMap() {
@@ -131,7 +133,7 @@ class WeatherMap extends React.Component{
       config.latitude = latLng.lat();
       config.longitude = latLng.lng();
 
-      this.otherSearch();
+      this.pinSearch();
     }.bind(this));
     
     /// Add an event listener for drag end
@@ -140,7 +142,7 @@ class WeatherMap extends React.Component{
       config.latitude = latLng.lat();
       config.longitude = latLng.lng();
       
-      this.otherSearch();
+      this.pinSearch();
     }.bind(this));
     
     /// Update variable on map change
@@ -149,10 +151,11 @@ class WeatherMap extends React.Component{
     });
   }
 
-  formSubmit(e) {
-    e.preventDefault();
-    /// Clear the input
-    this.refs.newLocation.getDOMNode().value = '';
+handleSubmit(event) {
+    this.state.location = this.input.value;
+    event.preventDefault();
+
+    this.locationSearch();
   }
 
    /**
@@ -160,10 +163,11 @@ class WeatherMap extends React.Component{
    */
   async locationSearch() {
     /// Get the value from the search field
-    const location = this.refs.newLocation.getDOMNode().value;
-    if ( location !== '' )
+    ///const location = this.refs.newLocation.getDOMNode().value;
+
+    if (this.state.location !== '' )
     {
-      const res = await getWeatherFromLocation(location);
+      const res = await getWeatherFromLocation(this.state.location);
       this.setState({currenticon: res.weather[0].icon.slice(0, -1)});
       this.setState({location: res.place});
       this.setState({weather: res.weather[0].description});
@@ -173,6 +177,8 @@ class WeatherMap extends React.Component{
       this.setState({forecast3: res.forecast3});
       this.setState({forecast6: res.forecast6});
       this.setState({forecast9: res.forecast9});
+      config.latitude = res.latitude;
+      config.longitude = res.longitude;
 
       this.updateMap();
     }
@@ -181,7 +187,7 @@ class WeatherMap extends React.Component{
   /**
    * Call and Run when 'pin' on map is dragend or user clicks on map
    */
-   async otherSearch() {
+   async pinSearch() {
 
     const res = await getWeatherFromClick();
 
@@ -222,7 +228,7 @@ class WeatherMap extends React.Component{
   async componentWillMount() {
     
     const res = await getWeatherFromPosition();
-    //Get information from the response (current w and forecast every 3h + other info that can be taken)
+    //Get information from the response (current weather and forecast every 3h + other info that can be taken)
     this.setState({currenticon: res.weather[0].icon.slice(0, -1)});
     this.setState({location: res.place});
     this.setState({weather: res.weather[0].description});
@@ -245,11 +251,11 @@ class WeatherMap extends React.Component{
             <div className="panel-heading text-center"><span className="text-muted">Enter a place name below <em>or</em> use the map</span></div>
               <div className="panel-body">
                 
-                <form onSubmit={this.formSubmit}>
+                <form onSubmit={this.handleSubmit}>
                     <div className="input-group pull-left">
-                      <input type="text" className="form-control" placeholder="Enter a town/city name" ref="newLocation"/>
+                      <input type="text" className="form-control" placeholder="Enter a town/city name" ref={(input) => this.input = input} />
                       <span className="input-group-btn">
-                        <button type="submit" className="btn btn-default" onClick={this.locationSearch}>Search</button>
+                        <button type="submit" className="btn btn-default" value="Submit">Search</button>
                       </span>
                     </div>
                     
