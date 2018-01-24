@@ -1,5 +1,12 @@
 # Weatherapp
 
+This weatherapp shows to the user the weather condition in a particular place. The user has 3 ways to request the weather conditions:
+* Click on the map
+* Write the City/town name on the search bar
+* Drag and drop the pin on the map
+
+This was my first project using React and Nodejs.
+
 ## TASKs DONE (I've added extra features)
 
 There are a few things you must do to get the app up and running. After that there are a few things you can do to make it better.
